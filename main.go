@@ -58,5 +58,5 @@ func main() {
 		return c.JSON(personajes)
 	})
 
-	log.Fatal(app.Listen(":3030"))
+	log.Fatal(app.Listen(":1000"))
 }
