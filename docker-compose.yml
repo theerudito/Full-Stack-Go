@@ -1,9 +1,11 @@
-#version: '3.9'
+# version: '3.9'
 
 services:
   # Servicio para la primera API
   api:
-    build: .
+    build:
+      context: .  # Usa el directorio actual para construir la imagen
+      dockerfile: ./Dockerfile  # Especifica el Dockerfile
     ports:
       - "1000:1000"
     environment:
@@ -12,20 +14,7 @@ services:
     depends_on:
       - db
     networks:
-      - red-jorge
-
-  # # Servicio para la segunda API
-  # api2:
-  #   build: .
-  #   ports:
-  #     - "1001:1001"
-  #   environment:
-  #     ENVIRONMENT: production
-  #     DATABASE_URL: postgres://postgres:1020@db:5432/Ejemplo?sslmode=disable
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - red-jorge
+      - red
 
   # Servicio para la base de datos PostgreSQL
   db:
@@ -40,7 +29,7 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - red-jorge
+      - red
 
   # Servicio para Nginx
   nginx:
@@ -53,10 +42,8 @@ services:
       - ./etc/letsencrypt:/etc/letsencrypt  # Para los certificados SSL
     depends_on:
       - api
-      # - api2
-      # - react_app
     networks:
-      - red-jorge
+      - red
 
   # Servicio para Certbot (certificados SSL)
   certbot:
@@ -69,13 +56,11 @@ services:
     depends_on:
       - nginx
     networks:
-      - red-jorge
+      - red
 
 volumes:
   pgdata:
 
 networks:
-  red-jorge:
+  red:
     driver: bridge
-
-
