@@ -1,3 +1,11 @@
+
+-- Crear base de datos
+CREATE DATABASE Ejemplo;
+
+-- Conectarse a la base de datos
+\c Ejemplo;
+
+-- Crear tabla de personajes
 CREATE TABLE
   personajes (
     id SERIAL PRIMARY KEY,
