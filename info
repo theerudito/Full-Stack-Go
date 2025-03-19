@@ -1,4 +1,0 @@
-# limpia los contenedores actuales y sus volúmenes
-
-docker-compose down -v
-docker-compose up --build
