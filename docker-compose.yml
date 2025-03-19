@@ -27,14 +27,6 @@ services:
   #   networks:
   #     - red-jorge
 
-  # # Servicio para la aplicación React
-  # react_app:
-  #   build: ./react_app
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - red-jorge
-
   # Servicio para la base de datos PostgreSQL
   db:
     image: postgres:latest

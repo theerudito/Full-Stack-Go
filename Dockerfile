@@ -2,14 +2,13 @@
 FROM golang:1.24.1 AS builder
 
 WORKDIR /app
-COPY . .
+COPY . .  
 RUN go mod tidy
-RUN go build -o api .
+RUN go build -o api . 
 
 # Etapa de ejecución
 FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/api .
 EXPOSE 1000
-CMD ["./api"]
-
+CMD ["./api"]  # Ejecuta el binario
