@@ -9,7 +9,7 @@ RUN go mod tidy
 
 RUN go build -o api .
 
-EXPOSE 3030
+EXPOSE 1000
 
 CMD ["./api"]
 
