@@ -11,4 +11,4 @@ FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/api .  
 EXPOSE 1000
-CMD ["./api"]  # Ejecuta el binario generado
+CMD ["./api"]
