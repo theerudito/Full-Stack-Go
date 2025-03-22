@@ -1,11 +1,9 @@
-# version: '3.9'
-
 services:
-  # Servicio para la primera API
+ 
   api:
     build:
-      context: .  # Usa el directorio actual para construir la imagen
-      dockerfile: ./Dockerfile  # Especifica el Dockerfile
+      context: .  
+      dockerfile: ./Dockerfile  
     ports:
       - "1000:1000"
     environment:
@@ -15,8 +13,8 @@ services:
       - db
     networks:
       - red
+    restart: always
 
-  # Servicio para la base de datos PostgreSQL
   db:
     image: postgres:latest
     environment:
@@ -30,33 +28,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - red
-
-  # Servicio para Nginx
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./etc/letsencrypt:/etc/letsencrypt  # Para los certificados SSL
-    depends_on:
-      - api
-    networks:
-      - red
-
-  # Servicio para Certbot (certificados SSL)
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./html:/var/www/certbot
-      - ./etc/letsencrypt:/etc/letsencrypt
-      - ./var/lib/letsencrypt:/var/lib/letsencrypt
-    command: certonly --webroot --webroot-path=/var/www/certbot -d app1.between-bytes.tech -d app2.between-bytes.tech --email erudito.dev@gmail.com --agree-tos --non-interactive
-    depends_on:
-      - nginx
-    networks:
-      - red
+    restart: always
 
 volumes:
   pgdata:
