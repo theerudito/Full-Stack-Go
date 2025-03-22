@@ -1,0 +1,1 @@
+Go + React Vite or Blazor + Postgres SQL + Nginx + Certbot + Docker + Docker-Compose + Ubuntu 
