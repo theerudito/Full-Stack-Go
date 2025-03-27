@@ -1,12 +1,142 @@
-# React + Vite
+Alojar un sitio web React en un servidor Ubuntu con Nginx
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Instalar Nginx en Ubuntu
 
-Currently, two official plugins are available:
+```bash
+sudo apt update
+sudo apt install nginx
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Instalar Certbot
 
-## Expanding the ESLint configuration
+```bash
+sudo apt install certbot python3-certbot-nginx
+```
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Verificar Estado de Nginx
+
+```bash
+sudo systemctl status nginx
+```
+
+Verificar la configuración de Nginx
+
+```bash
+sudo nginx -t
+```
+
+mensaje de salida:
+
+```bash
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+crear el directorio para archivos estáticos en /var/www/tu-dominio.com
+
+```bash
+sudo mkdir -p /var/www/tu-dominio.com
+```
+
+copiar los archivos estáticos a /var/www/tu-dominio.com
+
+```bash
+sudo cp -r /home/ubuntu/tu-dominio.com/build/* /var/www/tu-dominio.com/
+```
+
+Crea un archivo de configuración en /etc/nginx/sites-available/tu-dominio.com
+
+```bash
+sudo nano /etc/nginx/sites-available/tu-dominio.com
+```
+
+Ejemplo:
+
+```bash
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name tu-dominio.com;
+
+    root /var/www/tu-dominio.com;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+Verificar la configuración de Nginx
+
+```bash
+sudo nginx -t
+```
+
+mensaje de salida:
+
+```bash
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+crear un enlace simbólico en /etc/nginx/sites-enabled/
+
+```bash
+sudo ln -s /etc/nginx/sites-available/tu-dominio.com /etc/nginx/sites-enabled/
+```
+
+Verificar la configuración de Nginx
+
+```bash
+sudo nginx -t
+```
+
+mensaje de salida:
+
+```bash
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+Usar Certbot para obtener los certificados SSL
+
+```bash
+sudo certbot --nginx -d tu-dominio.com
+```
+
+llenar los datos solicitados
+
+Verificar la configuración de Nginx
+
+```bash
+sudo nginx -t
+```
+
+mensaje de salida:
+
+```bash
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+Reiniciar Nginx
+
+```bash
+sudo systemctl restart nginx
+```
+
+Renovar los certificados automáticamente
+
+```bash
+sudo certbot renew
+```
+
+Verifica que la renovación se haya realizado correctamente:
+
+```bash
+sudo systemctl reload nginx
+```
+
+Configura la renovación automáticamente:
+
+```bash
+sudo systemctl enable certbot.timer
+```
