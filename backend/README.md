@@ -99,6 +99,18 @@ DATABASE_URL=postgres://postgres:1020@db:5432/Ejemplo?sslmode=disable
 ENVIRONMENT=production
 ```
 
+levantar el contenedor
+
+```bash
+docker-compose up -d
+```
+
+detener el contenedor
+
+```bash
+docker-compose down
+```
+
 verificar la configuracion de nginx
 
 ```bash
